@@ -1,0 +1,36 @@
+apply plugin: 'com.android.model.library'
+
+def COPY_OF_CPP_RELEASE_FLAGS = ext.CPP_RELEASE_FLAGS;
+model {
+    android {
+        compileSdkVersion 23
+        buildToolsVersion "23.0.2"
+
+        ndk {
+            moduleName 'looksery'
+            toolchain 'clang'
+            toolchainVersion '3.6'
+
+            stl 'c++_shared'
+            abiFilters.addAll(["armeabi-v7a"])
+        }
+
+        defaultConfig {
+            minSdkVersion.apiLevel 16
+            targetSdkVersion.apiLevel 22
+            versionCode 1
+            versionName "1.0"
+        }
+
+        buildTypes {
+            release {
+                minifyEnabled false
+                ndk {
+                    cppFlags.addAll(ext.CPP_RELEASE_FLAGS)
+                    // don't cause an error
+                    //cppFlags.addAll(COPY_OF_CPP_RELEASE_FLAGS)
+                }
+            }
+        }
+    }
+}
